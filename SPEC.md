@@ -1,7 +1,8 @@
 # Proof of Usage — specification
 
-**Version `PoU/0.1`.** Draft. The hash rule and the field names are what everything else depends
-on; those are settled. The rest may still move.
+**Version `PoU/1.0`.** Settled. The seven fields, the hash rule and the two transports are what
+implementations depend on, and they will not change under this version number. Later versions may
+add; 1.0 does not move.
 
 A *record* says that a system used a work. A *credit* says that a product was built with it. The
 two are joined by a hash either side can recompute, and that join is the whole protocol. Everything
@@ -108,7 +109,7 @@ document at `/.well-known/proof-of-usage.json`.
 
 ```json
 {
-  "pou": "0.1",
+  "pou": "1.0",
   "work": "https://github.com/acme/widget",
   "record": { "path": "PROOF_OF_USAGE.md", "branch": "proof-of-usage", "format": "markdown" },
   "transports": [
@@ -194,13 +195,17 @@ provides is a claim that is specific, dated, addressed and checkable against its
 
 - In a repository: the discovery document of §4.
 - In a model or dataset card: the `proof_of_usage` key of §3.2.
-- In prose, where a version matters: `Proof of Usage PoU/0.1`.
+- In prose, where a version matters: `Proof of Usage PoU/1.0`.
 
 ## 8. Versioning
 
-`PoU/0.1` is a draft, and drafts move. The hash rule of §2 will not change without a major
-version, because a digest that means one thing in a record and another in a credit is worse than
-no digest. Field names may gain optional companions; the seven of §1 will not be renamed.
+`PoU/1.0` is the first settled version, and it stays put. The hash rule of §2 will not change
+without a major version, because a digest that means one thing in a record and another in a credit
+is worse than no digest. Field names may gain optional companions in a 1.x; the seven of §1 will
+not be renamed, and neither will `work`. A document that omits `pou` is read as `1.0`.
+
+Version 0.1 existed for a day and differed in nothing but the number it printed. Anything that
+implemented it implements this.
 
 ## 9. What this is not
 

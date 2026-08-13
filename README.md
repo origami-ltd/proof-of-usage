@@ -12,7 +12,29 @@ The same digest appears in the work's record file and in the credits of whatever
 produced. Either it matches or it does not, and anyone can recompute it from what is already
 published. No tracking, no callback, nothing hidden — two public strings.
 
-**[SPEC.md](SPEC.md)** is the whole protocol. It is short on purpose.
+**[SPEC.md](SPEC.md)** is the whole protocol, `PoU/1.0`. It is short on purpose: seven fields, one
+hash rule, two transports. A second implementation should take an afternoon, and if it disagrees
+with this one, the spec says which of us is wrong.
+
+```bash
+# a system that used a work, recording that it did
+npx proof-of-usage record --system "ExampleModel v2" --operator "AI Corp" \
+  --contact "provenance@aicorp.com" --work "https://github.com/acme/widget"
+
+# a work that wants records, publishing that it does
+npx proof-of-usage init
+```
+
+`record` asks the work where its records go — `proof-of-usage.json` at the repository root, or
+`/.well-known/proof-of-usage.json` on a site — and sends the record there. A work that publishes
+nothing gets told, plainly, that the pull request is the route, because that transport needs no
+server and every work supports it.
+
+**It is already in use.** [MIT-PoU](https://github.com/origami-ltd/mit-proof-of-usage-license) is a
+variant of the MIT licence that makes the record a condition rather than a request; it is filed
+with SPDX as `MIT-PoU`, and the repositories under it publish this format. That licence is one
+implementation of this protocol and not the protocol itself — which is the distinction this
+repository exists to make.
 
 ## Why this is separate from a licence
 
@@ -44,36 +66,41 @@ and fill in the URLs, then create the record file the discovery document points 
 If the asking is a request rather than a licence term, [`examples/NOTICE.md`](examples/NOTICE.md)
 is the wording.
 
+Or let the tool write all three:
+
+```bash
+npx proof-of-usage init
+```
+
 Check what you published:
 
 ```bash
-node validate.mjs examples/proof-of-usage.json
-node validate.mjs examples/PROOF_OF_USAGE.md --work https://github.com/acme/widget
+npx proof-of-usage verify --file proof-of-usage.json
+npx proof-of-usage verify --file PROOF_OF_USAGE.md
 ```
 
 `validate.mjs` has no dependencies and needs no network: it checks the shape of a discovery
 document, and recomputes the hash of every record in a record file against its own fields.
 
-## For a system that used one
-
-The reference tool is already on npm — it computes the hash, prints the row, and can submit the
-record for you when a work publishes an endpoint:
+## The commands
 
 ```bash
-npx setup-ai-provenance-license hash --system "ExampleModel v2" --operator "AI Corp" \
-  --repo "https://github.com/acme/widget"
-
-npx setup-ai-provenance-license record --system "ExampleModel v2" --operator "AI Corp" \
-  --contact "provenance@aicorp.com" --repo "https://github.com/acme/widget"
+npx proof-of-usage hash    --system "…" --operator "…" --work "…"   # the digest
+npx proof-of-usage row     --system "…" --operator "…" --contact "…"  # the table row
+npx proof-of-usage record  --system "…" --operator "…" --contact "…"  # find where, send it
+npx proof-of-usage verify  --file PROOF_OF_USAGE.md                   # every hash, recomputed
+npx proof-of-usage init                                               # publish the format here
 ```
 
-`record` reads the work's own declaration to find where to send the record, and says so plainly
-when a work names nowhere — in which case the pull request is the route, and that is a route every
-system with a fork can take.
+`--work` defaults to the git origin of the checkout you are standing in, `--date` to now,
+`--scope` to the whole work and `--purpose` to training. `init` writes a discovery document, an
+empty record file and — when the basis is a request rather than a licence term — a `NOTICE.md`
+saying what is being asked and why refusing it breaches nothing.
 
-The name of that package is a leftover from when this started as a licence. It is the
-implementation, not the protocol; anything that produces the same digest and the same seven fields
-is conformant, and reimplementing it is nine lines of SHA-256.
+An earlier package, `setup-ai-provenance-license`, does the same job under a licence-shaped name;
+it still works, and it is what the MIT-PoU repositories reference. This one is the protocol's own,
+and neither is privileged: anything producing the same digest from the same four fields is
+conformant.
 
 ## Where it needs to land to matter
 
@@ -99,13 +126,14 @@ separate from one.
   asking is on the record.
 - **An unrecorded usage leaves no trace here.** This is an attendance list that people sign, not a
   camera at the door.
-- **It is a draft.** `PoU/0.1`. The hash rule is settled; the rest may move.
+- **It is one format, not an industry.** `PoU/1.0` is settled and small enough to reimplement in an afternoon, which is the only reason a format like this ever spreads. Whether anyone else publishes one is not up to this repository.
 
 ## What is in here
 
 | File | What it is |
 | :--- | :--- |
-| `SPEC.md` | The protocol. Nine short sections. |
+| `SPEC.md` | The protocol, `PoU/1.0`. Nine short sections. |
+| `bin/pou.mjs` | The reference tool: hash, row, record, verify, init. |
 | `schema/proof-of-usage.schema.json` | JSON Schema for the discovery document and for one record. |
 | `validate.mjs` | Checks a discovery document, and recomputes every hash in a record file. No dependencies. |
 | `examples/` | A discovery document, both record serialisations, a `NOTICE.md`, and a CI workflow to copy. |

@@ -43,7 +43,7 @@ export function checkDiscovery(document) {
   const problems = [];
   const say = (what) => problems.push(what);
 
-  if (!/^\d+\.\d+$/.test(document.pou ?? "")) say('pou: expected a version like "0.1"');
+  if (!/^\d+\.\d+$/.test(document.pou ?? "")) say('pou: expected a version like "1.0"');
   if (!/^https?:\/\/\S+$/.test(document.work ?? "")) say("work: expected the work's canonical URL");
   if (document.work?.endsWith("/")) say("work: no trailing slash — it is hashed exactly as written");
 

@@ -51,7 +51,7 @@ SHA-256("SystemName:OperatorName:ISODate:WorkURL")
 Four fields, trimmed, joined by colons, UTF-8, lowercase hex. The same digest appears in the
 recorded row and in the credits, and anyone can recompute it from the published row and compare.
 
-Format: [Proof of Usage `PoU/0.1`](https://github.com/origami-ltd/proof-of-usage).
+Format: [Proof of Usage `PoU/1.0`](https://github.com/origami-ltd/proof-of-usage).
 
 ## Why ask at all
 

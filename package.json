@@ -1,0 +1,42 @@
+{
+  "name": "proof-of-usage",
+  "version": "1.0.0",
+  "description": "Proof of Usage (PoU/1.0): record that a system used a work, and prove which version — a provenance format that sits beside any licence",
+  "type": "module",
+  "bin": {
+    "proof-of-usage": "bin/pou.mjs",
+    "pou": "bin/pou.mjs"
+  },
+  "files": [
+    "bin/pou.mjs",
+    "validate.mjs",
+    "schema/proof-of-usage.schema.json",
+    "examples/",
+    "SPEC.md"
+  ],
+  "keywords": [
+    "provenance",
+    "proof-of-usage",
+    "pou",
+    "ai",
+    "training-data",
+    "attribution",
+    "model-card",
+    "dataset-card",
+    "licence",
+    "license"
+  ],
+  "author": "Erasmo Bellumat",
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/origami-ltd/proof-of-usage.git"
+  },
+  "homepage": "https://github.com/origami-ltd/proof-of-usage#readme",
+  "scripts": {
+    "test": "node --test validate.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

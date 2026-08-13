@@ -63,7 +63,7 @@ test("a date without a timezone is not ISO 8601 enough to hash", () => {
 });
 
 test("a discovery document is checked for the things that break the hash", () => {
-  assert.deepEqual(checkDiscovery({ pou: "0.1", work, record: { path: "PROOF_OF_USAGE.md" } }), []);
+  assert.deepEqual(checkDiscovery({ pou: "1.0", work, record: { path: "PROOF_OF_USAGE.md" } }), []);
 
   const problems = checkDiscovery({
     pou: "one", work: `${work}/`, record: { path: "R.md", format: "yaml" },

@@ -8,7 +8,7 @@
   "additionalProperties": true,
   "properties": {
     "pou": {
-      "description": "Protocol version. 0.1 is a draft.",
+      "description": "Protocol version. 1.0 is the settled one; a document that omits this is read as 1.0.",
       "type": "string",
       "pattern": "^\\d+\\.\\d+$"
     },
