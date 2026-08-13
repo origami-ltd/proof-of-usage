@@ -107,6 +107,46 @@ this was a licence with a script attached; it is superseded and every repository
 now points here. Nothing about either name is privileged: anything producing the same digest from
 the same four fields is conformant, and the spec settles disagreements rather than the package.
 
+## What it looks like in a repository
+
+Seven files, none of them long, and only the first two are the protocol:
+
+```
+your-repository/
+├── proof-of-usage.json                      the discovery document — where records go
+├── PROOF_OF_USAGE.md                        the record file (often on its own branch)
+├── NOTICE.md                                what is being asked, when it is a request
+├── AGENTS.md                                the same, addressed to the system that reads first
+├── README.md                                one section near the bottom, for people
+├── .github/workflows/proof-of-usage.yml     recomputes every hash on a pull request
+└── public/.well-known/proof-of-usage.json   the same discovery document, if it is also a site
+```
+
+Every one of those has a file to copy in [`examples/`](examples/) — including the two that are the
+hardest to write from scratch, which are the prose ones:
+[`README-section.md`](examples/README-section.md) for people and
+[`AGENTS.md`](examples/AGENTS.md) for the system that opens that file before anything else.
+`npx proof-of-usage init` writes the first three.
+
+### Seen in the wild
+
+[`origami-ltd/wasm-generals`](https://github.com/origami-ltd/wasm-generals) is a working example
+and every link here resolves:
+
+| Piece | Live |
+| :--- | :--- |
+| Discovery document | [`proof-of-usage.json`](https://github.com/origami-ltd/wasm-generals/blob/main/proof-of-usage.json) |
+| Served by the site | [generals.wasm.ltd/.well-known/proof-of-usage.json](https://generals.wasm.ltd/.well-known/proof-of-usage.json) |
+| Record file, on its own branch | [`PROOF_OF_USAGE.md`](https://github.com/origami-ltd/wasm-generals/blob/proof-of-usage/PROOF_OF_USAGE.md) |
+| Addressed to the reader that is a machine | [`AGENTS.md`](https://github.com/origami-ltd/wasm-generals/blob/main/AGENTS.md) · [`llms.txt`](https://generals.wasm.ltd/llms.txt) |
+| The endpoint that opens the pull request | `POST https://generals.wasm.ltd/api/proof-of-usage` |
+
+That repository sets `"basis": "licence"` — it asks by a term of
+[MIT-PoU](https://github.com/origami-ltd/mit-proof-of-usage-license) rather than by a NOTICE, and
+its `LICENSE.md` carries the endpoint in an appendix. A project that would rather ask than require
+changes one field and drops the appendix; every other file is identical, which is the point of the
+field existing.
+
 ## Where it needs to land to matter
 
 The record file and the credit line work today between two people who both care. The protocol is
@@ -141,7 +181,7 @@ separate from one.
 | `bin/pou.mjs` | The reference tool: hash, row, record, verify, init. |
 | `schema/proof-of-usage.schema.json` | JSON Schema for the discovery document and for one record. |
 | `validate.mjs` | Checks a discovery document, and recomputes every hash in a record file. No dependencies. |
-| `examples/` | A discovery document, both record serialisations, a `NOTICE.md`, and a CI workflow to copy. |
+| `examples/` | Everything a work publishes: discovery, both record serialisations, `NOTICE.md`, `AGENTS.md`, the README section, and a CI workflow. |
 | `proof-of-usage.json` | This repository's own, because a format its author will not publish is not a format. |
 
 ## Licence of this repository

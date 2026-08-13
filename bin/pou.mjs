@@ -317,7 +317,11 @@ Two things left:
   2. If this is a site as well as a repository, serve the same discovery document at
      /.well-known/proof-of-usage.json — a crawler that never touches the repository finds it there.
 
-basis is "${basis}": ${basis === "request" ? "a NOTICE, which changes nothing about your licence and keeps the project open source." : "a term of your licence, which is a decision with costs — see the MIT-PoU repository before relying on it."}`);
+basis is "${basis}": ${basis === "request" ? "a NOTICE, which changes nothing about your licence and keeps the project open source." : "a term of your licence, which is a decision with costs — see the MIT-PoU repository before relying on it."}
+
+Two files this cannot write for you, because they belong in prose you already have: a section in
+your README, and an AGENTS.md for the system that opens that file first. Both are ready to copy at
+https://github.com/origami-ltd/proof-of-usage/tree/main/examples`);
   process.exit(0);
 }
 
