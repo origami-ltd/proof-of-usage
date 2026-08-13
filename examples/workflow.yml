@@ -1,0 +1,32 @@
+# Copy to .github/workflows/proof-of-usage.yml in a work that keeps a record file.
+#
+# It recomputes the provenance hash of every record from that record's own fields and fails if one
+# disagrees. It cannot check whether a record is true - nothing can - but a record that contradicts
+# itself is the one kind of wrong that is worth catching automatically, and catching it in a pull
+# request is kinder than finding it in someone's credits a year later.
+name: Proof of usage
+
+on:
+  pull_request:
+    paths:
+      - PROOF_OF_USAGE.md
+      - proof-of-usage.jsonl
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check every record against its own fields
+        env:
+          # The fourth field of the hash. Set it explicitly if the canonical URL of this work is
+          # not its GitHub URL - a dataset or model page, say, or a site.
+          WORK: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          curl -fsSL -o validate.mjs \
+            https://raw.githubusercontent.com/origami-ltd/proof-of-usage/main/validate.mjs
+          node validate.mjs PROOF_OF_USAGE.md --work "$WORK"

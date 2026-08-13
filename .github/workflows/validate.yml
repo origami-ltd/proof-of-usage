@@ -1,0 +1,26 @@
+name: Validate
+
+# The spec is only worth what its checks are worth, so they run on every change: the tests, then
+# the validator against every example in the repository and against the repository's own record.
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: node --test validate.test.mjs
+
+      - name: Check the examples and this repository's own record
+        run: |
+          node validate.mjs examples/proof-of-usage.json
+          node validate.mjs examples/PROOF_OF_USAGE.md --work https://github.com/acme/widget
+          node validate.mjs examples/proof-of-usage.jsonl --work https://github.com/acme/widget
+          node validate.mjs proof-of-usage.json
+          node validate.mjs PROOF_OF_USAGE.md
