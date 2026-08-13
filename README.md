@@ -18,11 +18,11 @@ with this one, the spec says which of us is wrong.
 
 ```bash
 # a system that used a work, recording that it did
-npx proof-of-usage record --system "ExampleModel v2" --operator "AI Corp" \
+npx setup-ai-provenance-license record --system "ExampleModel v2" --operator "AI Corp" \
   --contact "provenance@aicorp.com" --work "https://github.com/acme/widget"
 
 # a work that wants records, publishing that it does
-npx proof-of-usage init
+npx setup-ai-provenance-license init
 ```
 
 `record` asks the work where its records go — `proof-of-usage.json` at the repository root, or
@@ -69,14 +69,14 @@ is the wording.
 Or let the tool write all three:
 
 ```bash
-npx proof-of-usage init
+npx setup-ai-provenance-license init
 ```
 
 Check what you published:
 
 ```bash
-npx proof-of-usage verify --file proof-of-usage.json
-npx proof-of-usage verify --file PROOF_OF_USAGE.md
+npx setup-ai-provenance-license verify --file proof-of-usage.json
+npx setup-ai-provenance-license verify --file PROOF_OF_USAGE.md
 ```
 
 `validate.mjs` has no dependencies and needs no network: it checks the shape of a discovery
@@ -85,11 +85,11 @@ document, and recomputes the hash of every record in a record file against its o
 ## The commands
 
 ```bash
-npx proof-of-usage hash    --system "…" --operator "…" --work "…"   # the digest
-npx proof-of-usage row     --system "…" --operator "…" --contact "…"  # the table row
-npx proof-of-usage record  --system "…" --operator "…" --contact "…"  # find where, send it
-npx proof-of-usage verify  --file PROOF_OF_USAGE.md                   # every hash, recomputed
-npx proof-of-usage init                                               # publish the format here
+npx setup-ai-provenance-license hash    --system "…" --operator "…" --work "…"   # the digest
+npx setup-ai-provenance-license row     --system "…" --operator "…" --contact "…"  # the table row
+npx setup-ai-provenance-license record  --system "…" --operator "…" --contact "…"  # find where, send it
+npx setup-ai-provenance-license verify  --file PROOF_OF_USAGE.md                   # every hash, recomputed
+npx setup-ai-provenance-license init                                               # publish the format here
 ```
 
 `--work` defaults to the git origin of the checkout you are standing in, `--date` to now,
@@ -97,10 +97,15 @@ npx proof-of-usage init                                               # publish 
 empty record file and — when the basis is a request rather than a licence term — a `NOTICE.md`
 saying what is being asked and why refusing it breaches nothing.
 
-An earlier package, `setup-ai-provenance-license`, does the same job under a licence-shaped name;
-it still works, and it is what the MIT-PoU repositories reference. This one is the protocol's own,
-and neither is privileged: anything producing the same digest from the same four fields is
-conformant.
+```bash
+npx setup-ai-provenance-license licence   # the MIT-PoU variant, where the record is a condition
+```
+
+The package is published as `setup-ai-provenance-license` — the name it had when this started as a
+licence, and the name every repository already references. It installs `pou` and
+`proof-of-usage` as commands as well, so a shell can call it by what it does rather than by where
+it came from. Nothing about the name is privileged: anything producing the same digest from the
+same four fields is conformant, and the spec settles disagreements, not this package.
 
 ## Where it needs to land to matter
 

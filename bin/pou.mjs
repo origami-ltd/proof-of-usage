@@ -8,6 +8,7 @@
  *   record   find where a work takes records, and send one
  *   verify   recompute every hash in a record file against its own fields
  *   init     publish the protocol on a work you keep
+ *   licence  fetch the MIT-PoU licence templates, for the variant where the record is a condition
  *
  * Nothing here is privileged. The digest is nine lines of SHA-256 and the file formats are two
  * paragraphs of the spec; a second implementation by someone who has never seen this file should
@@ -40,13 +41,14 @@ const quiet = (cmd) => {
 
 const HELP = `proof-of-usage — record that a system used a work, and prove which version
 
-  npx proof-of-usage <command> [options]
+  npx setup-ai-provenance-license <command> [options]
 
   hash     print the provenance digest for one access
   row      print the record as a table row
   record   send a record where the work says to send it
   verify   check a record file, or a discovery document
   init     write proof-of-usage.json, PROOF_OF_USAGE.md and NOTICE.md here
+  licence  fetch the MIT-PoU licence, where the record is a condition rather than a request
 
 Fields
   --system    Model, product or agent, with version        required
@@ -316,6 +318,55 @@ Two things left:
      /.well-known/proof-of-usage.json — a crawler that never touches the repository finds it there.
 
 basis is "${basis}": ${basis === "request" ? "a NOTICE, which changes nothing about your licence and keeps the project open source." : "a term of your licence, which is a decision with costs — see the MIT-PoU repository before relying on it."}`);
+  process.exit(0);
+}
+
+if (command === "licence" || command === "license") {
+  // The licence variant lives in its own repository and is fetched rather than vendored: this
+  // package implements a format, and a format that ships one licensor's terms in its tarball is
+  // making a recommendation it has no business making.
+  const tag = opt("tag") ?? "v1.1.1";
+  const base = `https://raw.githubusercontent.com/origami-ltd/mit-proof-of-usage-license/${tag}`;
+  const holder =
+    opt("holder") ??
+    (() => {
+      try {
+        const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+        const author = typeof pkg.author === "string" ? pkg.author : pkg.author?.name;
+        if (author) return author.replace(/\s*<[^>]*>/, "").replace(/\s*\([^)]*\)/, "").trim();
+      } catch { /* no package.json of ours to read */ }
+      return quiet("git config user.name") || "[Copyright Holders]";
+    })();
+
+  for (const name of ["LICENSE.md", "PROOF_OF_USAGE.md"]) {
+    const path = join(root, name);
+    if (existsSync(path) && !flags.has("--force")) {
+      console.log(`skipped ${name}: already here (--force to replace it)`);
+      continue;
+    }
+    const body = await fetch(`${base}/${name}`).then((r) => (r.ok ? r.text() : ""));
+    if (!body) {
+      console.error(`could not fetch ${name} from ${tag}`);
+      process.exit(1);
+    }
+    const filled = body
+      .replace("[Year]", String(new Date().getFullYear()))
+      .replace("[Copyright Holders]", holder);
+    if (flags.has("--dry-run")) console.log(`would write ${name} (${holder})`);
+    else {
+      writeFileSync(path, filled);
+      console.log(`wrote ${name}`);
+    }
+  }
+
+  console.log(`
+That is MIT-PoU ${tag}: the MIT licence with the record as a condition rather than a request. It is
+source-available and not OSI open source, it is GPL-incompatible, and your manifest should say
+"license": "SEE LICENSE IN LICENSE.md" rather than "MIT". Read the costs before relying on it:
+https://github.com/origami-ltd/mit-proof-of-usage-license
+
+Then publish the format so a system can find where to record:
+  npx setup-ai-provenance-license init --basis licence`);
   process.exit(0);
 }
 

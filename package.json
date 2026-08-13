@@ -1,9 +1,10 @@
 {
-  "name": "proof-of-usage",
-  "version": "1.0.0",
-  "description": "Proof of Usage (PoU/1.0): record that a system used a work, and prove which version — a provenance format that sits beside any licence",
+  "name": "setup-ai-provenance-license",
+  "version": "2.0.0",
+  "description": "Proof of Usage (PoU/1.0): record that a system used a work, and prove which version - a provenance format that sits beside any licence",
   "type": "module",
   "bin": {
+    "setup-ai-provenance-license": "bin/pou.mjs",
     "proof-of-usage": "bin/pou.mjs",
     "pou": "bin/pou.mjs"
   },
