@@ -13,7 +13,7 @@ is not worth publishing on the repository that defines it, it is not worth publi
 Add a row and open a pull request, or:
 
 ```bash
-npx setup-ai-provenance-license record --system "…" --operator "…" --contact "…" \
+npx proof-of-usage record --system "…" --operator "…" --contact "…" \
   --repo "https://github.com/origami-ltd/proof-of-usage"
 ```
 

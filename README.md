@@ -101,11 +101,11 @@ saying what is being asked and why refusing it breaches nothing.
 npx proof-of-usage licence   # the MIT-PoU variant, where the record is a condition
 ```
 
-The package is published as `setup-ai-provenance-license` — the name it had when this started as a
-licence, and the name every repository already references. It installs `pou` and
-`proof-of-usage` as commands as well, so a shell can call it by what it does rather than by where
-it came from. Nothing about the name is privileged: anything producing the same digest from the
-same four fields is conformant, and the spec settles disagreements, not this package.
+Published as [`proof-of-usage`](https://www.npmjs.com/package/proof-of-usage), installing `pou`
+as a second command name. An older package, `setup-ai-provenance-license`, was this tool while
+this was a licence with a script attached; it is superseded and every repository that referenced it
+now points here. Nothing about either name is privileged: anything producing the same digest from
+the same four fields is conformant, and the spec settles disagreements rather than the package.
 
 ## Where it needs to land to matter
 

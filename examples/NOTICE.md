@@ -26,7 +26,7 @@ pull request against that branch:
 | Provenance Hash | Below |
 
 ```bash
-npx setup-ai-provenance-license record --system "…" --operator "…" --contact "…" \
+npx proof-of-usage record --system "…" --operator "…" --contact "…" \
   --repo "https://github.com/acme/widget"
 ```
 
