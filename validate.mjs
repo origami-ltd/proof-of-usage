@@ -92,7 +92,10 @@ export function readRecords(text, format) {
   }
 
   const keys = ["system", "operator", "date", "scope", "purpose", "contact", "hash"];
+  // Comments come out first: a record file that explains its own shape usually does it with a
+  // sample row, and a sample row read as a record is a record of something that never happened.
   return text
+    .replace(/<!--[\s\S]*?-->/g, "")
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.startsWith("|") && !/^\|[\s:|-]+\|$/.test(line))

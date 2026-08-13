@@ -73,3 +73,16 @@ test("a discovery document is checked for the things that break the hash", () =>
   assert.ok(problems.some((p) => p.includes("trailing slash")));
   assert.ok(problems.some((p) => p.includes("endpoint needs an https url")));
 });
+
+test("a sample row inside a comment is not a record", () => {
+  const file = [
+    "| System | Operator | Date and Time (UTC) | Scope | Purpose | Contact | Provenance Hash |",
+    "| :--- | :--- | :--- | :--- | :--- | :--- | :--- |",
+    "",
+    "<!-- A row looks like this:",
+    "",
+    "     | ExampleModel v2 | AI Corp | 2026-08-12T14:30:00Z | whole work | training | ai@corp.com | `<hash>` |",
+    "-->",
+  ].join("\n");
+  assert.deepEqual(readRecords(file, "markdown"), []);
+});
