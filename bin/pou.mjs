@@ -41,7 +41,7 @@ const quiet = (cmd) => {
 
 const HELP = `proof-of-usage — record that a system used a work, and prove which version
 
-  npx setup-ai-provenance-license <command> [options]
+  npx proof-of-usage <command> [options]
 
   hash     print the provenance digest for one access
   row      print the record as a table row
@@ -366,7 +366,7 @@ source-available and not OSI open source, it is GPL-incompatible, and your manif
 https://github.com/origami-ltd/mit-proof-of-usage-license
 
 Then publish the format so a system can find where to record:
-  npx setup-ai-provenance-license init --basis licence`);
+  npx proof-of-usage init --basis licence`);
   process.exit(0);
 }
 
