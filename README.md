@@ -182,6 +182,7 @@ separate from one.
 | `schema/proof-of-usage.schema.json` | JSON Schema for the discovery document and for one record. |
 | `validate.mjs` | Checks a discovery document, and recomputes every hash in a record file. No dependencies. |
 | `examples/` | Everything a work publishes: discovery, both record serialisations, `NOTICE.md`, `AGENTS.md`, the README section, and a CI workflow. |
+| [`ADOPTING.md`](ADOPTING.md) | Adopting the MIT-PoU licence variant, step by step, costs first. |
 | `proof-of-usage.json` | This repository's own, because a format its author will not publish is not a format. |
 
 ## Licence of this repository
