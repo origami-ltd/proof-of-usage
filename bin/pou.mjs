@@ -329,7 +329,7 @@ if (command === "licence" || command === "license") {
   // The licence variant lives in its own repository and is fetched rather than vendored: this
   // package implements a format, and a format that ships one licensor's terms in its tarball is
   // making a recommendation it has no business making.
-  const tag = opt("tag") ?? "v1.1.1";
+  const tag = opt("tag") ?? "v1.2.0";
   const base = `https://raw.githubusercontent.com/origami-ltd/mit-proof-of-usage-license/${tag}`;
   const holder =
     opt("holder") ??
